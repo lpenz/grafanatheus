@@ -34,6 +34,12 @@ RUN set -e -x; \
     go install github.com/superq/smokeping_prober@v0.6.1; \
     su -c 'setcap cap_net_raw=+ep ${GOPATH}/bin/smokeping_prober'
 
+# Install process-exporter
+RUN set -e -x; \
+    cd /opt/; \
+    curl -L https://github.com/ncabatoff/process-exporter/releases/download/v0.7.10/process-exporter-0.7.10.linux-amd64.tar.gz | tar -xz; \
+    ln -s process-exporter-* process-exporter
+
 COPY config-template /config-template/
 
 COPY entrypoint /
