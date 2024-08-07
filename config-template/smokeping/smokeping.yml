@@ -1,0 +1,5 @@
+---
+targets:
+  - hosts:
+      - 1.1.1.1
+    interval: 1s # 30s # Duration, Default 1s.

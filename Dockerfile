@@ -29,6 +29,11 @@ RUN set -e -x; \
     apt-get update; \
     apt-get install -y --no-install-recommends grafana
 
+# Install smokeping_prober
+RUN set -e -x; \
+    go install github.com/superq/smokeping_prober@v0.6.1; \
+    su -c 'setcap cap_net_raw=+ep ${GOPATH}/bin/smokeping_prober'
+
 COPY config-template /config-template/
 
 COPY entrypoint /
