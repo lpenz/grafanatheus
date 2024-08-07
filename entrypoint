@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+test -d /config/
+
+cp -Rvn /config-template/* /config/
+
+mkdir -p /runtime/prometheus
+mkdir -p /runtime/grafana
+
+exec /usr/bin/supervisord -c /config/supervisord.conf
