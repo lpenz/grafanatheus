@@ -1,4 +1,5 @@
 [![CI](https://github.com/lpenz/grafanatheus/workflows/CI/badge.svg)](https://github.com/lpenz/grafanatheus/actions)
+[![docker](https://img.shields.io/docker/v/lpenz/grafanatheus?label=release&logo=docker&sort=semver)](https://hub.docker.com/repository/docker/lpenz/grafanatheus)
 
 # grafanatheus
 
