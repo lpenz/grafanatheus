@@ -1,11 +1,28 @@
-FROM debian:bookworm
+# Build sensor-exporter:
+FROM docker.io/golang:1.11 AS sensor-exporter-build
+ENV GO111MODULE=on DEBIAN_FRONTEND=noninteractive
+RUN set -e -x; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        libsensors-dev git
+RUN set -e -x; \
+    git clone https://github.com/markround/sensor-exporter; \
+    cd sensor-exporter; \
+    go mod init; \
+    go install ./...; \
+    true
+
+##############################################################################
+
+# Runtime grafanatheus image
+FROM docker.io/debian:bookworm
 
 # install debian packages
 ENV DEBIAN_FRONTEND=noninteractive
 RUN set -e -x; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        locales gpg curl ca-certificates supervisor golang-go libcap2-bin
+        locales gpg curl ca-certificates supervisor golang-go libcap2-bin libsensors5
 
 # setup su, locale and env
 RUN set -e -x; \
@@ -39,6 +56,9 @@ RUN set -e -x; \
     cd /opt/; \
     curl -L https://github.com/ncabatoff/process-exporter/releases/download/v0.7.10/process-exporter-0.7.10.linux-amd64.tar.gz | tar -xz; \
     ln -s process-exporter-* process-exporter
+
+# Install sensor-exporter
+COPY --from=sensor-exporter-build /go/bin/sensor-exporter /go/bin/sensor-exporter
 
 COPY config-template /config-template/
 

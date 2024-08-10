@@ -2,6 +2,8 @@
 
 set -e -x
 
+mkdir -p config runtime
+
 docker build -t grafanatheus .
 docker run --rm \
     --name grafanatheus \
